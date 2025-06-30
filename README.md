@@ -38,7 +38,9 @@ Each iteration is automatically git committed to track the evolution process
 
 # Run the challenge
 
-The challenge is run inside a docker container to avoid self destructing the running host
+(prerequisites: either run in docker, or clojure+git or simply nix-shell)
+
+The challenge can be run inside a docker container to avoid self destructing the running host
 in case the LLM would decide to run shell commands.
 
 ``` sh
