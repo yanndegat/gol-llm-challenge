@@ -73,6 +73,16 @@ Full report at:
 # and ended up in an epic crash as it tried to add requirements to non available depencencies :)
 ```
 
+# Agi mode
+
+The agi mode is the same challenge, just once step further :)
+
+just run:
+
+``` sh
+make agi
+```
+
 # Submit
 
 The program should git commit each iteration.
@@ -85,4 +95,3 @@ We wont check for cheaters, so please be fair.
 
 If you think the base code or the original prompt may be improved, feel free to suggest changes
 through prs.
-
