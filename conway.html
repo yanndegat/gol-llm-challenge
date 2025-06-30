@@ -1,21 +1,4 @@
-(ns main
-  (:require [clj-http.client :as http]
-            [cheshire.core :as json]
-            [clojure.java.shell :as shell]
-            [clojure.java.io :as io])
-  (:gen-class))
-
-(def source-file "main.clj")
-(def state-file "program-state.json")
-(def html-file "conway.html")
-
-(def api-endpoint (System/getenv "API_URL"))
-(def api-key (System/getenv "API_KEY"))
-(def model (System/getenv "API_MODEL"))
-
-(defn create-html []
-  (spit html-file
-"<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Conway's Game of Life</title>
@@ -28,13 +11,13 @@
 </head>
 <body>
     <h1>Conway's Game of Life</h1>
-    <div class=\"controls\">
-        <button id=\"start\">Start</button>
-        <button id=\"stop\">Stop</button>
-        <button id=\"reset\">Reset</button>
-        <button id=\"random\">Random</button>
+    <div class="controls">
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <button id="reset">Reset</button>
+        <button id="random">Random</button>
     </div>
-    <canvas id=\"game\" width=\"500\" height=\"500\"></canvas>
+    <canvas id="game" width="500" height="500"></canvas>
     <script>
         const canvas = document.getElementById('game');
         const ctx = canvas.getContext('2d');
@@ -140,44 +123,4 @@
         drawGrid();
     </script>
 </body>
-</html>"))
-
-(defn open-browser []
-  (try
-    (let [os (.toLowerCase (System/getProperty "os.name"))]
-      (cond
-        (.contains os "win") (shell/sh "cmd" "/c" "start" html-file)
-        (.contains os "mac") (shell/sh "open" html-file)
-        :else (shell/sh "xdg-open" html-file)))
-    (catch Exception e
-      (println "⚠️  Couldn't open browser:" (.getMessage e)))))
-
-(defn read-source []
-  (slurp source-file))
-
-(defn write-source [code]
-  (spit source-file code))
-
-(defn read-state []
-  (try
-    (json/parse-string (slurp state-file) true)
-    (catch Exception _
-      {:iteration 0 :progress-log [] :current-phase "initialization"})))
-
-(defn write-state [state]
-  (spit state-file (json/generate-string state {:pretty true})))
-
-(defn update-state [state success? change-description]
-  (let [new-iteration (inc (:iteration state))
-        log-entry (str "Iter " new-iteration ": "
-                       (if success? "✅ " "❌ ")
-                       change-description)]
-    (-> state
-        (assoc :iteration new-iteration)
-        (update :progress-log conj log-entry))))
-
-(defn -main [& _args]
-  (println "🚀 Launching Conway's Game of Life")
-  (create-html)
-  (println "🌐 Opening in browser...")
-  (open-browser))
+</html>
